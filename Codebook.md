@@ -15,7 +15,13 @@ http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartpho
 ### Variables Information
 | Variable | Description
 -----------|-------------
-| activity | The activity performed (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING)
+| activity | The activity performed:
+* WALKING
+* WALKING_UPSTAIRS
+* WALKING_DOWNSTAIRS
+* SITTING
+* STANDING
+* LAYING
 | subject | Subject ID
 | tbodyacc.mean.x | Mean time for acceleration of body for X direction
 | tbodyacc.mean.y | Mean time for acceleration of body for Y direction
