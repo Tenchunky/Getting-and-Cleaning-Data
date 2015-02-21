@@ -14,18 +14,18 @@ library(dplyr)
 #    h.   'train' (7352x561) contains the training data set of 7352 observations.
      
      # Load activity and feature labels.
-     activity_labels <- read.table(file = "activity_labels.txt")
-     feature_labels <- read.table(file = "features.txt")
+     activity_labels <- read.table(file = "UCI-HAR-Dataset/activity_labels.txt")
+     feature_labels <- read.table(file = "UCI-HAR-Dataset/features.txt")
      
      # Load test data set.
-     test_subject <- read.table(file = "test/subject_test.txt")
-     test_activity <- read.table(file = "test/y_test.txt")
-     test <- read.table(file = "test/X_test.txt")
+     test_subject <- read.table(file = "UCI-HAR-Dataset/test/subject_test.txt")
+     test_activity <- read.table(file = "UCI-HAR-Dataset/test/y_test.txt")
+     test <- read.table(file = "UCI-HAR-Dataset/test/X_test.txt")
      
      # Load training data set.
-     train_subject <- read.table(file = "train/subject_train.txt")
-     train_activity <- read.table(file = "train/y_train.txt")
-     train <- read.table(file = "train/X_train.txt")
+     train_subject <- read.table(file = "UCI-HAR-Dataset/train/subject_train.txt")
+     train_activity <- read.table(file = "UCI-HAR-Dataset/train/y_train.txt")
+     train <- read.table(file = "UCI-HAR-Dataset/train/X_train.txt")
      
      
 # Step 2: Merge the test and training sets to create one data set. Appropriately labels the data set with 
@@ -70,6 +70,3 @@ library(dplyr)
 
      # Save 'merged_subset' to file
      write.table(x = tidy_data, file = "tidy_data.txt", row.names = FALSE)
-
-     
-     
