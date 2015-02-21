@@ -1,4 +1,4 @@
-# Getting-and-Cleaning-Data TEST
+# Getting-and-Cleaning-Data
 This is the repository for the course project for the Coursera Course on Getting and Cleaning Data Course (getdata-011).
 
 This repo contains the following files and folders. 
@@ -31,10 +31,10 @@ To create a R script called run_analysis.R that does the following.
 
 
 ## How the run_analysis.R script works?
-* Unzip the source data (https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip) in your working directory.
-* Copy the run_analysis.R script into the same working directory
+* Unzip the source data (https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip) into the working directory.
+* Copy the run_analysis.R script into the working directory
 * Perform `source("run_analysis.R")` command in R
-* If successful, you will find two output files are generated in the current working directory:
+* Upon successful running of the script, you will find two output files generated in the working directory:
   * `merged_subset.txt` (7.9 Mb) - File contains the tidy data set with only the measurements on the mean and standard deviation for each measurement (10299 rows by 68 columns).
   * `tidy_data.txt` (219 Kb) - File contains the tidy data set with the average of each variable for each activity and each subject (180 rows by 68 columns).
-* Perform `data <- read.table("tidy_data.txt")` command in R to read the final output file
+* Perform `data <- read.table("tidy_data.txt",header = TRUE)` command in R to read the final output file

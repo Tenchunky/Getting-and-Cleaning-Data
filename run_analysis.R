@@ -1,5 +1,3 @@
-library(dplyr)
-
 # Step 1: Load all relevant data sets from the 'Human Activity Recognition Using Smartphones Dataset, 
 # Version 1.0'. As per its "README.txt", the loaded data sets have been checked for the following:
 #    a.   'activity_labels' (6x2) contains the (6) activity identifier number and the 
@@ -12,6 +10,8 @@ library(dplyr)
 #    f.   'train_subjects' (7352x1) contains the subject's identifier number for each training.
 #    g.   'train_labels' (7352x1) contains the activity identifier number for each training.
 #    h.   'train' (7352x561) contains the training data set of 7352 observations.
+     # Load the necessary libraries
+     library(dplyr)
      
      # Load activity and feature labels.
      activity_labels <- read.table(file = "UCI-HAR-Dataset/activity_labels.txt")
