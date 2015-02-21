@@ -53,9 +53,6 @@
 
      # Create a subset 'merged_subset' that only contains the required columns. 
      merged_subset <- merged[,merged_filter]
-
-     # Save 'merged_subset' to file
-     write.table(x = merged_subset, file = "merged_subset.txt", row.names = FALSE)
      
      
 # Step 4: From the data set in step 3, creates a second, independent tidy data set with the average of 
