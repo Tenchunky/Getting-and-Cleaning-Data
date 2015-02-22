@@ -30,7 +30,7 @@ The suffix 'mean()' provides the mean value of each measurement and 'std()' prov
 
 
 ## Work performed to clean the data
-1. All relevant data sets from the 'Human Activity Recognition Using Smartphones Dataset, Version 1.0' are loaded into R. The loaded data sets have been checked for the following:
+1. Load all relevant data sets from the 'Human Activity Recognition Using Smartphones Dataset, Version 1.0' into R using `read.table()`. The loaded data sets are:
   * 'activity_labels' (6x2) contains the (6) activity identifier number and the corresponding activity name.
   * 'feature_labels' (561x2) contains the (561) feature identifier number and the corresponding feature name.
   * 'test_subjects' (2947x1) contains the subject's identifier number for each test.
@@ -39,60 +39,9 @@ The suffix 'mean()' provides the mean value of each measurement and 'std()' prov
   * 'train_subjects' (7352x1) contains the subject's identifier number for each training.
   * 'train_labels' (7352x1) contains the activity identifier number for each training.
   * 'train' (7352x561) contains the training data set of 7352 observations.
-     # Load the necessary libraries
-     library(dplyr)
-     
-     # Load activity and feature labels.
-     activity_labels <- read.table(file = "UCI-HAR-Dataset/activity_labels.txt")
-     feature_labels <- read.table(file = "UCI-HAR-Dataset/features.txt")
-     
-     # Load test data set.
-     test_subject <- read.table(file = "UCI-HAR-Dataset/test/subject_test.txt")
-     test_activity <- read.table(file = "UCI-HAR-Dataset/test/y_test.txt")
-     test <- read.table(file = "UCI-HAR-Dataset/test/X_test.txt")
-     
-     # Load training data set.
-     train_subject <- read.table(file = "UCI-HAR-Dataset/train/subject_train.txt")
-     train_activity <- read.table(file = "UCI-HAR-Dataset/train/y_train.txt")
-     train <- read.table(file = "UCI-HAR-Dataset/train/X_train.txt")
-     
-     
-# Step 2: Merge the test and training sets to create one data set. Appropriately labels the data set with 
-# descriptive variable names and use descriptive activity names to name the activities in the data set
-     # Add activity and subject columns to the left of 'test' and 'train' (cbind) and then merge the 
-     # results and  save to 'merged' (rbind).
-     merged <- rbind(cbind(test_activity, test_subject, test), cbind(train_activity, train_subject, train))
-     
-     # Label the columns with descriptive variable names 'activity', 'subject' and those loaded from
-     # 'feature_labels'
-     colnames(merged) <- c("activity", "subject", as.character(feature_labels[,2]))
-     
-     # Use descriptive activity names by replacing 'merged$activity' column which contains the activity 
-     # identifier number with the corresponding descriptive variable name in activity_labels[,2].
-     merged$activity <- activity_labels[merged$activity,2]
-     
-     
-# Step 3: Extracts only the measurements on the mean and standard deviation for each measurement.
-     # Create 'merged_filter' which contains TRUE/FALSE depending on whether the column contains mean 
-     # or standard deviation. The "\\" in grepl indicates exact match with no spaces in between.
-     merged_filter <- grepl("mean\\(\\)|std\\(\\)",colnames(merged))
-
-     # Replace with TRUE for the columns containing activity and subject.
-     merged_filter[1:2] <- TRUE
-
-     # Create a subset 'merged_subset' that only contains the required columns. 
-     merged_subset <- merged[,merged_filter]
-     
-     
-# Step 4: From the data set in step 3, creates a second, independent tidy data set with the average of 
-# each variable for each activity and each subject.
-     # Group 'merged_subset" by activity and subject and save to 'tidy_data'
-     tidy_data <- group_by(merged_subset, activity, subject)     
-
-     # Find the average of each variable for each activity and each subject and save to and replace 
-     # 'tidy_data'. summarise_each() from dplyr applies one or more functions to one or more column while 
-     # excluding grouping variables. library(dplyr)
-     tidy_data <- summarise_each(tidy_data,funs(mean))
-
-     # Save 'merged_subset' to file
-     write.table(x = tidy_data, file = "tidy_data.txt", row.names = FALSE)
+2. Merge the test and training sets with their corresponding activity and subject using `cbind()` and then merge the resulting data sets to create one data set using `rbind()`. 
+3. Appropriately labels the data set with descriptive variable names using `colnames()` loaded from 'feature_labels'. 
+4. Use descriptive activity names by replacing the activity column which contains the activity identifier number with the corresponding descriptive variable name 'activity_labels'.
+5. Extracts only the measurements on the mean and standard deviation for each measurement by creating a 'merged_filter' variable which contains TRUE/FALSE depending on whether the column contains activity, subject, mean or standard deviation. `grepl()` is used to perform this for mean and standard deviation and "\\" operator is used to perform exact match with no spaces in between. This variable is then used to choose the required subset of the data set created in step 4.
+6. A second independent tidy data set with the average of each variable for each activity and each subject is created by first grouping the data set created in step 5 using `group_by()` and then using `summarise_each()` to apply `mean()` to each column excluding grouping variables. Note that library(dplyr) has been loaded for these operations
+7. The output in step 6 is then saved to file 'tidy_data.txt' using `write.table()`
