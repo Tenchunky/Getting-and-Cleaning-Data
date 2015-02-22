@@ -30,7 +30,7 @@ To create a R script called run_analysis.R that does the following.
 * From the data set above, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 
 
-## How the run_analysis.R script works?
+## How to use the run_analysis.R script?
 * Unzip the source data (https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip) into the working directory.
 * Copy the run_analysis.R script into the working directory
 * Perform `source("run_analysis.R")` command in R

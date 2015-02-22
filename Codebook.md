@@ -21,5 +21,78 @@ The rest of the varaibles come from measurements from the accelerometer and gyro
 
 Subsequently, the body linear acceleration and angular velocity were derived in time to obtain Jerk signals (tBodyAccJerk-XYZ and tBodyGyroJerk-XYZ). Also the magnitude of these three-dimensional signals were calculated using the Euclidean norm (tBodyAccMag, tGravityAccMag, tBodyAccJerkMag, tBodyGyroMag, tBodyGyroJerkMag). 
 
-Finally a Fast Fourier Transform (FFT) was applied to some of these signals producing fBodyAcc-XYZ, fBodyAccJerk-XYZ, fBodyGyro-XYZ, fBodyAccJerkMag, fBodyGyroMag, fBodyGyroJerkMag. (Note the 'f' to indicate frequency domain signals). 
+Finally a Fast Fourier Transform (FFT) was applied to some of these signals producing fBodyAcc-XYZ, fBodyAccJerk-XYZ, fBodyGyro-XYZ, fBodyAccJerkMag, fBodyGyroMag, fBodyGyroJerkMag. (Note the 'f' to indicate frequency domain signals).
 
+These signals were used to estimate variables of the feature vector for each pattern:  
+'-X', '-Y' and '-Z' is used to denote 3-axial signals in the X, Y and Z directions respectively.
+
+The suffix 'mean()' provides the mean value of each measurement and 'std()' provides the standard deviation of each measurement.
+
+
+## Work performed to clean the data
+1. All relevant data sets from the 'Human Activity Recognition Using Smartphones Dataset, Version 1.0' are loaded into R. The loaded data sets have been checked for the following:
+  * 'activity_labels' (6x2) contains the (6) activity identifier number and the corresponding activity name.
+  * 'feature_labels' (561x2) contains the (561) feature identifier number and the corresponding feature name.
+  * 'test_subjects' (2947x1) contains the subject's identifier number for each test.
+  * 'test_labels' (2947x1) contains the activity identifier number for each test.
+  * 'test' (2947x561) contains the test data set of 2947 observations.
+  * 'train_subjects' (7352x1) contains the subject's identifier number for each training.
+  * 'train_labels' (7352x1) contains the activity identifier number for each training.
+  * 'train' (7352x561) contains the training data set of 7352 observations.
+     # Load the necessary libraries
+     library(dplyr)
+     
+     # Load activity and feature labels.
+     activity_labels <- read.table(file = "UCI-HAR-Dataset/activity_labels.txt")
+     feature_labels <- read.table(file = "UCI-HAR-Dataset/features.txt")
+     
+     # Load test data set.
+     test_subject <- read.table(file = "UCI-HAR-Dataset/test/subject_test.txt")
+     test_activity <- read.table(file = "UCI-HAR-Dataset/test/y_test.txt")
+     test <- read.table(file = "UCI-HAR-Dataset/test/X_test.txt")
+     
+     # Load training data set.
+     train_subject <- read.table(file = "UCI-HAR-Dataset/train/subject_train.txt")
+     train_activity <- read.table(file = "UCI-HAR-Dataset/train/y_train.txt")
+     train <- read.table(file = "UCI-HAR-Dataset/train/X_train.txt")
+     
+     
+# Step 2: Merge the test and training sets to create one data set. Appropriately labels the data set with 
+# descriptive variable names and use descriptive activity names to name the activities in the data set
+     # Add activity and subject columns to the left of 'test' and 'train' (cbind) and then merge the 
+     # results and  save to 'merged' (rbind).
+     merged <- rbind(cbind(test_activity, test_subject, test), cbind(train_activity, train_subject, train))
+     
+     # Label the columns with descriptive variable names 'activity', 'subject' and those loaded from
+     # 'feature_labels'
+     colnames(merged) <- c("activity", "subject", as.character(feature_labels[,2]))
+     
+     # Use descriptive activity names by replacing 'merged$activity' column which contains the activity 
+     # identifier number with the corresponding descriptive variable name in activity_labels[,2].
+     merged$activity <- activity_labels[merged$activity,2]
+     
+     
+# Step 3: Extracts only the measurements on the mean and standard deviation for each measurement.
+     # Create 'merged_filter' which contains TRUE/FALSE depending on whether the column contains mean 
+     # or standard deviation. The "\\" in grepl indicates exact match with no spaces in between.
+     merged_filter <- grepl("mean\\(\\)|std\\(\\)",colnames(merged))
+
+     # Replace with TRUE for the columns containing activity and subject.
+     merged_filter[1:2] <- TRUE
+
+     # Create a subset 'merged_subset' that only contains the required columns. 
+     merged_subset <- merged[,merged_filter]
+     
+     
+# Step 4: From the data set in step 3, creates a second, independent tidy data set with the average of 
+# each variable for each activity and each subject.
+     # Group 'merged_subset" by activity and subject and save to 'tidy_data'
+     tidy_data <- group_by(merged_subset, activity, subject)     
+
+     # Find the average of each variable for each activity and each subject and save to and replace 
+     # 'tidy_data'. summarise_each() from dplyr applies one or more functions to one or more column while 
+     # excluding grouping variables. library(dplyr)
+     tidy_data <- summarise_each(tidy_data,funs(mean))
+
+     # Save 'merged_subset' to file
+     write.table(x = tidy_data, file = "tidy_data.txt", row.names = FALSE)
